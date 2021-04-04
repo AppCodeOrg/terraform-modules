@@ -2,6 +2,7 @@ steps:
 - id: 'get github token from secrets'
   name: eu.gcr.io/${PROJECT_ID}/github-tag:latest
   secretEnv: ['GITHUB_TOKEN', 'REPO_OWNER']
+  
 availableSecrets:
   secretManager:
   - versionName: ${_GITHUB_TOKEN_SECRET}

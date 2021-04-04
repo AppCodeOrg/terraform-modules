@@ -1,9 +1,9 @@
 locals {
   visibility                           = var.is_private_repo ? "private" : "public"
   default_branch                       = "master"
-  branches_to_protect                  = concat(["master"], var.branches_to_protect)
-  branches_require_pull_request_review = merge({ master = true }, var.branches_require_pull_request_review)
-  branches_approving_review_count      = merge({ master = var.master_approving_review_count }, var.branches_approving_review_count)
+  branches_to_protect                  = var.enable_branch_protection ? concat(["master"], var.branches_to_protect) : []
+  branches_require_pull_request_review = var.enable_branch_protection ? merge({ master = true }, var.branches_require_pull_request_review) : {}
+  branches_approving_review_count      = var.enable_branch_protection ? merge({ master = var.master_approving_review_count }, var.branches_approving_review_count) : {}
 
 }
 
@@ -124,4 +124,13 @@ resource "github_issue_label" "labels" {
       description
     ]
   }
+}
+
+resource "github_repository_deploy_key" "repository_deploy_key" {
+  count = length(var.deploy_key) > 0 ? 1 : 0
+
+  title      = "Repository deploy key"
+  repository = github_repository.repository.name
+  key        = var.deploy_key
+  read_only  = false
 }

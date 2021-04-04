@@ -53,7 +53,7 @@ variable "archived" {
 variable "create_from_template" {
   type        = bool
   description = "Specifies whether to create the repo from a template repository. Defaults to true and creates from generic template"
-  default     = true
+  default     = false
 }
 
 variable "template" {
@@ -80,6 +80,11 @@ variable "webhook_content_type" {
 variable "branches_to_create" {
   type    = list(string)
   default = []
+}
+
+variable "enable_branch_protection" {
+  type    = bool
+  default = true
 }
 
 variable "branches_to_protect" {
@@ -124,5 +129,11 @@ variable "collaborators_repository_memberships" {
 
 variable "teams" {
   type    = map(string)
-  default = {}  
+  default = {}
+}
+
+variable "deploy_key" {
+  type        = string
+  description = "Public SSH Deploy Key"
+  default     = ""
 }

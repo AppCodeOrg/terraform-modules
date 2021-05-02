@@ -1,5 +1,3 @@
 provider "github" {
-  organization = "AppCodeOrg"
+  owner = "AppCodeOrg"
 }
-
-

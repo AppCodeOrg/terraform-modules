@@ -137,3 +137,8 @@ variable "deploy_key" {
   description = "Public SSH Deploy Key"
   default     = ""
 }
+
+variable "branches_required_status_checks" {
+  type = map(list(string))
+  default = {master = []}
+}

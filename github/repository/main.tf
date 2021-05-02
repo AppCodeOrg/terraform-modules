@@ -73,11 +73,6 @@ resource "github_branch_protection_v3" "branch_protections" {
   branch         = each.key
   enforce_admins = true
 
-  required_status_checks {
-    strict   = true
-    contexts = []
-  }
-
   dynamic "required_pull_request_reviews" {
     for_each = lookup(local.branches_require_pull_request_review, each.key, false) ? [1] : []
     content {
@@ -87,8 +82,12 @@ resource "github_branch_protection_v3" "branch_protections" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [required_status_checks]
+  dynamic "required_status_checks" {
+    for_each = length(lookup(var.branches_required_status_checks, each.key, [])) > 0 ? [1] : [0]
+    content {
+      strict = true
+      contexts = lookup(var.branches_required_status_checks, each.key, [])
+    }
   }
 
   depends_on = [
